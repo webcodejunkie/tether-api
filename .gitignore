@@ -1,0 +1,5 @@
+#ignore these folders
+
+node_modules/
+
+.env
