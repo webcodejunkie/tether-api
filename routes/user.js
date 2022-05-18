@@ -99,5 +99,18 @@ router.get('/findplayers', passport.authenticate('jwt', { session: false }), (re
     });
 });
 
+// Find Profile
+
+router.get('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.status(201).json(user);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error' + error);
+    });
+});
+
 
 module.exports = router;
