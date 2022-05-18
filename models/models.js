@@ -31,7 +31,7 @@ let userSchema = mongoose.Schema({
   Bio: { type: String },
   PlayerType: {
     type: String,
-    required
+    required: true
   },
   Friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 }, { timestamps: true });
