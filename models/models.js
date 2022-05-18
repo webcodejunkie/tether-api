@@ -26,6 +26,7 @@ let userSchema = mongoose.Schema({
   Email: { type: String, required: true },
   Birthday: { type: Date, required: true },
   ProfilePicture: {
+    type: String,
     default: "https://placeimg.com/640/480/any"
   },
   Bio: { type: String },
