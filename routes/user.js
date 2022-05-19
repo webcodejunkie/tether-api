@@ -155,7 +155,7 @@ router.put('/:Username', passport.authenticate('jwt', { session: false }),
 
 // Delete Profile
 
-app.delete('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.delete('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
