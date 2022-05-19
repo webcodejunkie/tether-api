@@ -202,7 +202,7 @@ router.delete('/:Username/:UserID', passport.authenticate('jwt', { session: fals
     });
 });
 
-router.post('/:Username/timeline', passport.authenticate('jwt', { session: false }),
+router.post('/timeline', passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Post.create({
       msg: req.body.msg
