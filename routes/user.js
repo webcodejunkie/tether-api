@@ -112,5 +112,93 @@ router.get('/:Username', passport.authenticate('jwt', { session: false }), (req,
     });
 });
 
+// Edit Profile
+
+router.put('/:Username', passport.authenticate('jwt', { session: false }),
+  [
+    check('Username', 'Username is required').not().isEmpty(),
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Password', 'Password must be more then 8 characters').isLength({ min: 8 }),
+    check('Email', 'Email does not appear to be valid').isEmail(),
+    check('Bio', 'Max characters - 250').isLength({ max: 250 })
+  ], (req, res) => {
+    let errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+
+    Users.findOneAndUpdate({ Username: req.params.Username }, {
+      $set:
+      {
+        Username: req.body.Username,
+        Password: hashedPassword,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+        Bio: req.body.Bio
+      }
+    }, { new: true },
+      (error, updatedUser) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        } else {
+          res.json(updatedUser);
+        }
+      })
+
+  });
+
+// Delete Profile
+
+app.delete('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + ' could not be found, please try again.');
+      } else {
+        res.status(200).send(req.params.Username + ' profile has been deleted, sorry to see you go.')
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+// Add / Follow Player
+
+router.post('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $push: { Friends: req.params.UserID }
+  }, { new: true },
+    (error, updatedUser) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+});
+
+// Unfollow - Unfriend Player
+
+router.delete('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $pull: { Friends: req.params.UserID }
+  }, { new: true },
+    (error, updatedUser) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+});
+
 
 module.exports = router;
