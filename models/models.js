@@ -19,7 +19,7 @@ let postSchema = mongoose.Schema({
   },
 
   user: {
-    type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
 
   likes: {
