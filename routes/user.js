@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 // REGISTER
 router.post('/register', [
   check('Username', 'Username is required').not().isEmpty(),
-  check('Username', 'Username is required').isLength({ min: 5 }),
+  check('Username', 'Username is required').isLength({ max: 10 }),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
   check('Password', 'Password is required').not().isEmpty(),
   check('Password', 'Password must be more then 8 characters').isLength({ min: 8 }),
@@ -172,7 +172,7 @@ router.delete('/:Username', passport.authenticate('jwt', { session: false }), (r
 
 // Add / Follow Player
 
-router.post('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/:Username/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $push: { Friends: req.params.UserID }
   }, { new: true },
