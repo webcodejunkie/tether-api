@@ -61,6 +61,13 @@ let userSchema = mongoose.Schema({
     default: [],
   },
   Messages: {
+    msg: {
+      from: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+      type: String,
+      maxLength: 300,
+      required: true
+    },
+
     type: Array,
     default: [],
   },
