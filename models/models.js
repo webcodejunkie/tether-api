@@ -2,14 +2,27 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 let imageSchema = mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   name: String,
   desc: String,
   img: {
     data: Buffer,
     contentType: String
   }
-})
+});
+
+let postSchema = mongoose.Schema({
+  msg: {
+    type: String,
+    maxLength: 300,
+    required: true
+  },
+
+  user: {
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    required: true
+  }
+}, { timestamps: true });
 
 let userSchema = mongoose.Schema({
   Username: {
@@ -47,6 +60,8 @@ userSchema.methods.validatePassword = function (password) {
 
 let User = mongoose.model('User', userSchema);
 let Image = mongoose.model('Image', imageSchema);
+let Post = mongoose.model('Post', postSchema);
 
+module.exports.Post = Post;
 module.exports.Image = Image;
 module.exports.User = User;

@@ -11,6 +11,8 @@ const path = require('path');
 
 // Mongoose Models
 const Models = require('../models/models.js');
+
+const Post = Models.Post;
 const ImageModel = Models.Image;
 const Users = Models.User;
 
@@ -187,7 +189,7 @@ router.post('/:Username/:UserID', passport.authenticate('jwt', { session: false 
 
 // Unfollow - Unfriend Player
 
-router.delete('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.delete('/:Username/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $pull: { Friends: req.params.UserID }
   }, { new: true },
@@ -199,6 +201,20 @@ router.delete('/:Username', passport.authenticate('jwt', { session: false }), (r
       }
     });
 });
+
+router.post('/timeline', passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Post.create({
+      msg: req.body.msg
+    })
+      .then((msg) => {
+        res.status(201).json(msg)
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
 
 
 module.exports = router;

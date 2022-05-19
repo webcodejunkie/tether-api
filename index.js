@@ -31,12 +31,8 @@ app.use(morgan('common'));
 let auth = require('./auth')(app);
 
 // API End-Points
-app.use('/', userRoute);
 
-// REGISTER
-app.use('/tether', userRoute);
-
-// FIND PLAYERS
+// User Routes
 app.use('/tether', userRoute);
 
 
