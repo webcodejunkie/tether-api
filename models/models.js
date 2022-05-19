@@ -20,7 +20,6 @@ let postSchema = mongoose.Schema({
 
   user: {
     type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    required: true
   }
 }, { timestamps: true });
 
@@ -48,6 +47,7 @@ let userSchema = mongoose.Schema({
     required: true
   },
   Friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  Posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
 }, { timestamps: true });
 
 userSchema.statics.hashPassword = (password) => {
