@@ -64,6 +64,7 @@ let userSchema = mongoose.Schema({
     msg: {
       from: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       type: String,
+      sent: Date(),
       maxLength: 300,
       required: true,
       timestamps: true,

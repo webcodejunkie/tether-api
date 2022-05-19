@@ -208,8 +208,11 @@ router.put('/message/:Username/:UserID', passport.authenticate('jwt', { session:
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $push: {
       Messages: {
-        text: req.body.text,
-        from: req.params.UserID
+        msg: {
+          text: req.body.text,
+          from: req.params.UserID,
+          sent: Date(),
+        }
       }
     }
   }, { new: true },
