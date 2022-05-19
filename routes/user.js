@@ -203,7 +203,7 @@ router.delete('/:Username/:UserID', passport.authenticate('jwt', { session: fals
 });
 
 
-router.put('message/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.put('/message/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $push: { Messages: req.body.Messages }
   }, { new: true },
