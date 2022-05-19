@@ -203,4 +203,17 @@ router.delete('/:Username/:UserID', passport.authenticate('jwt', { session: fals
 });
 
 
+router.post('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $push: { Messages: req.body.Messages }
+  }, { new: true },
+    (error, updatedUser) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+});
+
 module.exports = router;

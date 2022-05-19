@@ -60,6 +60,14 @@ let userSchema = mongoose.Schema({
     type: Array,
     default: [],
   },
+  Messages: {
+    type: Array,
+    default: [],
+  },
+  Favorites: {
+    type: Array,
+    default: [],
+  },
   Posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
 }, { timestamps: true });
 
