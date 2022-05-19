@@ -56,7 +56,10 @@ let userSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  Friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  Friends: {
+    type: Array,
+    default: [],
+  },
   Posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
 }, { timestamps: true });
 
