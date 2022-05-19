@@ -205,12 +205,12 @@ router.delete('/:Username/:UserID', passport.authenticate('jwt', { session: fals
 
 router.put('/message/:Username/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
 
-  Users.findOneAndUpdate({ UserID: req.params.UserID }, {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
     $push: {
       Messages: {
         msg: {
           msg: req.body.msg,
-          from: req.params.Username
+          from: req.params.UserID
         }
       }
     }

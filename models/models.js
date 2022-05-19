@@ -65,7 +65,8 @@ let userSchema = mongoose.Schema({
       from: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       type: String,
       maxLength: 300,
-      required: true
+      required: true,
+      timestamps: true,
     },
 
     type: Array,
