@@ -210,21 +210,6 @@ router.post('/:Username/timeline', passport.authenticate('jwt', { session: false
       .then((msg) => {
         res.status(201).json(msg)
       })
-      .then((msg) => {
-        Users.findOneAndUpdate({ Username: req.params.Username }, {
-          $set: {
-            Posts: msg
-          }
-        }, { new: true },
-          (error, updatedUser) => {
-            if (error) {
-              console.error(error);
-              res.status(500).send('Error: ' + error);
-            } else {
-              res.json(updatedUser);
-            }
-          });
-      })
       .catch((error) => {
         console.error(error);
         res.status(500).send('Error: ' + error);
