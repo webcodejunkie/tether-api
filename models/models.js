@@ -20,6 +20,16 @@ let postSchema = mongoose.Schema({
 
   user: {
     type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  },
+
+  likes: {
+    type: Array,
+    default: [],
+  },
+
+  comments: {
+    type: Array,
+    default: [],
   }
 }, { timestamps: true });
 

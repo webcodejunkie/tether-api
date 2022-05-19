@@ -10,6 +10,7 @@ const { check, validationResult } = require("express-validator");
 
 // Imported Routes
 const userRoute = require("./routes/user");
+const postRoute = require("./routes/posts");
 
 // MongoDB Connection
 
@@ -34,6 +35,8 @@ let auth = require('./auth')(app);
 
 // User Routes
 app.use('/tether', userRoute);
+
+app.use('/tether/timeline', postRoute);
 
 
 const port = process.env.PORT || 8080;
