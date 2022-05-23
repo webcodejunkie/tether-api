@@ -54,7 +54,6 @@ let userSchema = mongoose.Schema({
   Bio: { type: String },
   PlayerType: {
     type: String,
-    required: true
   },
   Friends: {
     type: Array,
