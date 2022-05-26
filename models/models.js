@@ -36,8 +36,8 @@ let postSchema = mongoose.Schema({
 let userSchema = mongoose.Schema({
   Username: {
     type: String,
-    maxLength: 10,
-    minLength: 6,
+    maxLength: 12,
+    minLength: 5,
     required: true
   },
   Password: {
