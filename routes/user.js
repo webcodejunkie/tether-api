@@ -202,6 +202,21 @@ router.post('/:Username/game/:GameID', passport.authenticate('jwt', { session: f
     });
 });
 
+// Remove a following of a game
+
+router.delete('/:Username/game/:GameID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $pull: { Favorites: req.params.GameID }
+  }, { new: true },
+    (error, updatedUser) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+});
+
 // Unfollow - Unfriend Player
 
 router.delete('/:Username/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
