@@ -189,7 +189,7 @@ router.post('/:Username/:UserID', passport.authenticate('jwt', { session: false 
 
 // Add / Follow a game
 
-router.post('/:Username/:GameID', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/:Username/game/:GameID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $push: { Favorites: req.params.GameID }
   }, { new: true },
