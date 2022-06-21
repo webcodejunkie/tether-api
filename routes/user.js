@@ -174,7 +174,7 @@ router.delete('/:Username', passport.authenticate('jwt', { session: false }), (r
 
 // Add / Follow Player
 
-router.post('/:Username/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/:Username/user/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $push: { Friends: req.params.UserID }
   }, { new: true },
@@ -219,7 +219,7 @@ router.delete('/:Username/game/:GameID', passport.authenticate('jwt', { session:
 
 // Unfollow - Unfriend Player
 
-router.delete('/:Username/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.delete('/:Username/user/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $pull: { Friends: req.params.UserID }
   }, { new: true },
