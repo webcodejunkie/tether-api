@@ -51,9 +51,17 @@ let userSchema = mongoose.Schema({
     type: String,
     default: "https://placeimg.com/640/480/any"
   },
-  Bio: { type: String },
+  Bio: { type: String, required: true },
   PlayerType: {
     type: String,
+  },
+  Country: {
+    type: String,
+    required: true
+  },
+  Region: {
+    type: String,
+    required: true
   },
   Friends: {
     type: Array,
