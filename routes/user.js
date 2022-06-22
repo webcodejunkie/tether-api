@@ -52,7 +52,9 @@ router.post('/register', [
             Birthday: req.body.Birthday,
             ProfilePicture: req.body.ProfilePicture,
             Bio: req.body.Bio,
-            PlayerType: req.body.PlayerType
+            PlayerType: req.body.PlayerType,
+            Country: req.body.Country,
+            Region: req.body.Region,
           })
           .then((user) => { res.status(201).json(user) })
           .catch((err) => {

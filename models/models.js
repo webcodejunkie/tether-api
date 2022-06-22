@@ -57,9 +57,11 @@ let userSchema = mongoose.Schema({
   },
   Country: {
     type: String,
+    required: true
   },
   Region: {
     type: String,
+    required: true
   },
   Friends: {
     type: Array,
