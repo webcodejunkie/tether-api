@@ -5,7 +5,7 @@ let imageSchema = mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   name: String,
   desc: String,
-  img: {
+  image: {
     data: Buffer,
     contentType: String
   }
