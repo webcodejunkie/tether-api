@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { check, validationResult } = require("express-validator");
+const async = require('async');
 
 // JWT Authentication
 const passport = require('passport');
@@ -11,6 +12,7 @@ const path = require('path');
 
 // Mongoose Models
 const Models = require('../models/models.js');
+const { callbackify } = require("util");
 
 const Post = Models.Post;
 const ImageModel = Models.Image;
@@ -172,6 +174,147 @@ router.delete('/:Username', passport.authenticate('jwt', { session: false }), (r
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
+});
+
+// Friend-Request Logic
+
+router.post('/:Username/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  async.parallel([
+    function (callback) {
+      if (req.body.receiverName) {
+        Users.updateMany({
+          'Username': req.body.receiverName,
+          'Requests.UserId': { $ne: req.user._id },
+          'Friends.FriendId': { $ne: req.user._id }
+        }, {
+          $push: {
+            Requests: {
+              UserId: req.user._id,
+              Username: req.user.Username
+            },
+            $inc: { TotalRequest: 1 }
+          }
+        }, { new: true },
+          (error, count) => {
+            console.log(error);
+            callback(error, count);
+          });
+      }
+    },
+
+    function (callback) {
+      if (req.body.receiverName) {
+        Users.updateMany({
+          'Username': req.body.Username,
+          'SentRequest.Username': { $ne: req.body.receiverName },
+        }, {
+          $push: {
+            SentRequest: {
+              Username: req.user.Username,
+              'SentRequest.Username': { $ne: req.body.receiverName }
+            }
+          }
+        },
+          (error, count) => {
+            console.log(error);
+            callback(error, count);
+          })
+      }
+    }
+  ]),
+    (err, results) => {
+      res.redirect('/:Username/:UserID');
+    }
+
+  async.parallel([
+    // This function is updated for the receiver of the friend reqyest when it is accepted
+    function (callback) {
+      if (req.body.senderId) {
+        Users.updateMany({
+          '_id': req.user._id,
+          'Friends.FriendId': { $ne: req.body.senderId }
+        }, {
+          $push: {
+            Friends: {
+              FriendId: req.body.senderId,
+              FriendName: req.body.senderName
+            }
+          },
+          $pull: {
+            Requests: {
+              UserId: req.body.senderId,
+              Username: req.body.senderName
+            }
+          },
+          $inc: { TotalRequest: -1 }
+        }, (error, count) => {
+          callback(error, count);
+        });
+      }
+    },
+
+    // This function is updated for the sender of the the friend request when it is accepted by the receiver
+    function (callback) {
+      if (req.body.senderId) {
+        Users.updateMany({
+          '_id': req.body.senderId,
+          'Friends.FriendId': { $ne: req.user._id }
+        }, {
+          $push: {
+            Friends: {
+              FriendId: req.user._id,
+              FriendName: req.user.Username
+            }
+          },
+          $pull: {
+            Requests: {
+              Username: req.user.Username
+            }
+          },
+          $inc: { TotalRequest: -1 }
+        }, (error, count) => {
+          callback(error, count);
+        });
+      }
+    },
+
+    function (callback) {
+      if (req.body.user_id) {
+        Users.updateMany({
+          '_id': req.user._id,
+          'Requests.UserId': { $ne: req.body.user_id }
+        }, {
+          $pull: {
+            Requests: {
+              UserId: req.body.user_id
+            }
+          },
+          $inc: { TotalRequest: -1 }
+        }, (error, count) => {
+          callback(error, count);
+        });
+      }
+    },
+
+    function (callback) {
+      if (req.body.userId) {
+        Users.updateMany({
+          '_id': req.body.user_id,
+          'SentRequest.Username': { $ne: req.user.Username }
+        }, {
+          $pull: {
+            Requests: {
+              Username: req.user.Username
+            }
+          }
+        }, (error, count) => {
+          callback(error, count);
+        });
+      }
+    }
+  ], (err, results) => {
+    res.redirect('/:Username/:UserID')
+  })
 });
 
 // Add / Follow Player
