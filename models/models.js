@@ -11,28 +11,6 @@ let imageSchema = mongoose.Schema({
   }
 });
 
-let postSchema = mongoose.Schema({
-  msg: {
-    type: String,
-    maxLength: 300,
-    required: true
-  },
-
-  user: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  },
-
-  likes: {
-    type: Array,
-    default: [],
-  },
-
-  comments: {
-    type: Array,
-    default: [],
-  }
-}, { timestamps: true });
-
 let userSchema = mongoose.Schema({
   Username: {
     type: String,
@@ -67,24 +45,10 @@ let userSchema = mongoose.Schema({
     type: Array,
     default: [],
   },
-  Messages: {
-    msg: {
-      from: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-      type: String,
-      sent: Date(),
-      maxLength: 300,
-      required: true,
-      timestamps: true,
-    },
-
-    type: Array,
-    default: [],
-  },
   Favorites: {
     type: Array,
     default: [],
   },
-  Posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
 }, { timestamps: true });
 
 userSchema.statics.hashPassword = (password) => {
@@ -97,8 +61,6 @@ userSchema.methods.validatePassword = function (password) {
 
 let User = mongoose.model('User', userSchema);
 let Image = mongoose.model('Image', imageSchema);
-let Post = mongoose.model('Post', postSchema);
 
-module.exports.Post = Post;
 module.exports.Image = Image;
 module.exports.User = User;

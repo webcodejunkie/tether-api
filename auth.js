@@ -21,9 +21,8 @@ let generateJWTToken = (user) => {
 }
 
 /**
- * API call to POST a login request and generate a token upon POST
- * (/login) <= API call
- * @method LOGIN(POST)
+ * @method Login
+ * @summary Login created user and send back a jwt for protected URL's
  * @requires passport token 
  * @param {string} Username - The username of the User
  * @param {string} Password - The password of the User
