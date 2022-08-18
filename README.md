@@ -23,6 +23,7 @@ get players connected.
 This project includes a jsdoc of all the API calls that provide documentation on what is passed in and expected through the requests, you can find them here where you can run them locally but opening the *global.html* in your browser. [jsDoc](https://github.com/webcodejunkie/tether-api/tree/main/out)
 
 ## Mongoose Schemas's 
+**This API doesn't store game information, instead using a second API [RAWG](https://rawg.io/apidocs)**
 ## User
 This API's user model is built around maintaining basic user information such as Username, Password, Email, Birthday, PlayerType, Bio, Country, and Region.
 #### Username
@@ -43,4 +44,15 @@ In order to allow users to be paired up within countries based off where they ch
 Refers to Country.
 
 ## Community
+**Comunity Model's to come soon.**
+
+
 ## Image
+#### user
+The uploaded image will have the userId tied to the posted image
+#### name
+Name of the image
+#### desc
+Description of the image
+#### image
+An onject that will store the contents of the image into
