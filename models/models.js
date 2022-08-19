@@ -33,7 +33,7 @@ let postSchema = mongoose.Schema({
 
 let communitySchema = mongoose.Schema({
   Name: {
-    String,
+    type: String,
   },
   Admin: {
     type: String,
