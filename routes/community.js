@@ -23,7 +23,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
     });
 })
 
-router.post('/create/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/User:ID/create/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
   Community.findOne({ Name: req.body.Name })
     .then((com) => {
       if (com) {
@@ -33,7 +33,8 @@ router.post('/create/:GameID/', passport.authenticate('jwt', { session: false })
           .create({
             Name: req.body.Name,
             Desc: req.body.Desc,
-            Admin: req.params.UserID
+            Admin: req.params.UserID,
+            Game: req.params.GameID
           })
           .then((com) => { res.status(201).json(com) })
           .catch((err) => {
