@@ -75,6 +75,8 @@ router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }
           content: req.body.content,
         })
         .then((post) => {
+          console.log(post);
+          res.status(201).json(post);
           Community.findOneAndUpdate({ Admin: req.params.UserID }, {
             $push: { Posts: post }
           }, { new: true },
