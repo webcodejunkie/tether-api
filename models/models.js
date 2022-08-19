@@ -14,8 +14,7 @@ let imageSchema = mongoose.Schema({
 let postSchema = mongoose.Schema({
   post: {
     from: {
-      type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-      required: true
+      type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
     },
     content: {
       type: String,

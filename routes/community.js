@@ -12,8 +12,15 @@ const Community = Models.Community;
 const Users = Models.User;
 
 // Router Test
-router.get('/', (req, res) => {
-  res.send('youre in the community route :)');
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Community.find()
+    .then((com) => {
+      res.status(201).json(com);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error ' + error);
+    });
 })
 
 router.post('/create/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
