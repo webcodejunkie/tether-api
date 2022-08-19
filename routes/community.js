@@ -12,9 +12,10 @@ const Community = Models.Community;
 const Users = Models.User;
 
 // Router Test
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/all', passport.authenticate('jwt', { session: false }), (req, res) => {
   Community.find()
     .then((com) => {
+      console.log(com);
       res.status(201).json(com);
     })
     .catch((error) => {
