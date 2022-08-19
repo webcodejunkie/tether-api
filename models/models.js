@@ -42,6 +42,7 @@ let communitySchema = mongoose.Schema({
     type: Array,
     default: []
   },
+  MembersCount: { type: Number, default: 0},
   Game: {
     type: String,
   },
