@@ -68,11 +68,13 @@ router.delete('/delete/:UserID/:GameID/', passport.authenticate('jwt', { session
 router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
   let postObj = {
     from: req.params.UserID,
-    content: req.body.msg,
-    postedDate: Date()
+    content: req.body.content,
+    postedDate: Date(),
+    likes: 0,
+    comments: [],
   }
   Community.findOneAndUpdate({ Admin: req.params.UserID }, {
-    $push: { 'Posts.post': postObj }
+    $push: { Posts: postObj }
   }, { new: true },
     (error, updatedData) => {
       if (error) {
