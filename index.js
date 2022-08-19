@@ -16,7 +16,7 @@ const communityRoute = require('./routes/community');
 
 require("dotenv").config();
 
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: false }, () => {
   console.log("Connected to Mongo");
 });
 

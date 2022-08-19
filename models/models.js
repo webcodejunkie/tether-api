@@ -19,7 +19,6 @@ let postSchema = mongoose.Schema({
     content: {
       type: String,
       maxLength: 250,
-      required: true
     },
     likes: {
       type: Number,
@@ -35,11 +34,9 @@ let postSchema = mongoose.Schema({
 let communitySchema = mongoose.Schema({
   Name: {
     String,
-    required: true
   },
   Admin: {
     type: String,
-    required: true
   },
   Members: {
     type: Array,
@@ -47,7 +44,6 @@ let communitySchema = mongoose.Schema({
   },
   Game: {
     type: String,
-    required: true
   },
   Posts: {
     type: Array,
