@@ -46,4 +46,6 @@ router.post('/create/:GameID/', passport.authenticate('jwt', { session: false })
       console.error(err);
       res.status(500).send('Error: ' + err);
     })
-})
+});
+
+module.exports = router;
