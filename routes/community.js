@@ -36,8 +36,12 @@ router.post('/create/:UserID/:GameID/', passport.authenticate('jwt', { session: 
             Desc: req.body.Desc,
             Admin: req.params.UserID,
             Game: req.params.GameID
+          }, {
+            $push: { Members: req.params.UserID }
           })
-          .then((com) => { res.status(201).json(com) })
+          .then((com) => {
+            res.status(201).json(com);
+          })
           .catch((err) => {
             console.error(err);
             res.status(500).send('Error: ' + err);
