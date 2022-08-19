@@ -9,20 +9,20 @@ require('../passport');
 const Models = require('../models/models.js');
 
 const Community = Models.Community;
+const Post = Models.Post;
 const Users = Models.User;
 
 // Router Test
 router.get('/all', passport.authenticate('jwt', { session: false }), (req, res) => {
   Community.find()
     .then((com) => {
-      console.log(com);
       res.status(201).json(com);
     })
     .catch((error) => {
       console.error(error);
       res.status(500).send('Error ' + error);
     });
-})
+});
 
 router.post('/create/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
   Community.findOne({ Name: req.body.Name })
@@ -48,6 +48,59 @@ router.post('/create/:UserID/:GameID/', passport.authenticate('jwt', { session: 
       console.error(err);
       res.status(500).send('Error: ' + err);
     })
+});
+
+router.delete('/delete/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Community.findOneAndDelete({ Admin: req.params.UserID })
+    .then((com) => {
+      if (!com) {
+        res.status(400).send(req.params.UserID + ' community not be found, try again.')
+      } else {
+        res.status(400).send(req.params.UserID + ' community has been deleted.')
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+router.put('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  let user;
+  let post;
+
+  Users.findOne({ _id: req.params.UserID })
+    .then((user) => {
+      user = user;
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err)
+    });
+
+  Post
+    .create({
+      from: user,
+      content: req.body.content,
+    })
+    .then((msg) => {
+      post = msg;
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err)
+    });
+
+  Community.findOneAndUpdate({ Admin: req.params.UserID }, {
+    $push: { Posts: post }
+  }, { new: true },
+    (error, updatedData) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.json(updatedData);
+      }
+    });
 });
 
 module.exports = router;
