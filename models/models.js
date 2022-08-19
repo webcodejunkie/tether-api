@@ -46,8 +46,32 @@ let communitySchema = mongoose.Schema({
     type: String,
   },
   Posts: {
-    type: Array,
-    default: []
+    post: {
+      from: {
+        type: String,
+      },
+      content: {
+        type: String,
+        maxLength: 250
+      },
+      postedDate: {
+        type: Date
+      },
+      likes: { type: Number, default: 0 },
+      comments: {
+        type: Array,
+        default: [],
+        comment: {
+          from: {
+            type: String,
+          },
+          content: {
+            type: String,
+            maxLength: 200
+          }
+        }
+      }
+    }
   },
   Desc: {
     type: String,
