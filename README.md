@@ -22,10 +22,44 @@ get players connected.
 ## Getting Started
 This project includes a jsdoc of all the API calls that provide documentation on what is passed in and expected through the requests, you can find them here where you can run them locally but opening the *global.html* in your browser. [jsDoc](https://github.com/webcodejunkie/tether-api/tree/main/out)
 
-## Mongoose Schemas's 
+## Design Criteria
+### Essential Features
+* Integrate Socket.io for user to user chat system
+* Allow new users to register
+* Allow users to login
+* Allow users to update their information (username, password, email, bio)
+* Allow users to delete their profile
+* Allow users to follow/unfollow other users
+* Allow users to favorite/unfavorite games
+* Allow users to create a community forum on a chosen game
+* Allow the admin user of the create community forum to delete the forum
+* Allow users to post messages on the community forum board
+* Allow users to request to join a user created community forum
+### Optional Features
+* Let users upload a (single-file) profile picture
+### User Stories
+
+• As a consumer, I want to make a profile that will display a username, age, bio, and the type of player I am.
+
+• As a user, I want to view different titles (games) that display information about 
+them.
+
+• As a user, I want to a collection of communities that are available to join 
+dependent on what game I'm searching for.
+
+• As a user, I want to add another user and have it reflect on my friends list.
+
+• As a user of a community I want to create/delete/edit a posting of mine.
+
+## Mongoose Schemas's
+<details><summary> Mongoose Schemas's </summary>
+  
 **This API doesn't store game information, instead using a second API [RAWG](https://rawg.io/apidocs)**
+
 ## User
+
 This API's user model is built around maintaining basic user information such as Username, Password, Email, Birthday, PlayerType, Bio, Country, and Region.
+
 #### Username
 Will be used to define user's across tether.
 #### Password
@@ -56,3 +90,4 @@ Name of the image
 Description of the image
 #### image
 An onject that will store the contents of the image into
+</details>
