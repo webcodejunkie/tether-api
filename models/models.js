@@ -11,6 +11,55 @@ let imageSchema = mongoose.Schema({
   }
 });
 
+let postSchema = mongoose.Schema({
+  post: {
+    from: {
+      type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      required: true
+    },
+    content: {
+      type: String,
+      maxLength: 250,
+      required: true
+    },
+    likes: {
+      type: Number,
+      default: 0
+    },
+    comments: {
+      type: Array,
+      default: []
+    }
+  }
+}, { timestamps: true });
+
+let communitySchema = mongoose.Schema({
+  Name: {
+    String,
+    required: true
+  },
+  Admin: {
+    type: String,
+    required: true
+  },
+  Members: {
+    type: Array,
+    default: []
+  },
+  Game: {
+    type: String,
+    required: true
+  },
+  Posts: {
+    type: Array,
+    default: []
+  },
+  Desc: {
+    type: String,
+    maxLength: 250
+  }
+}, { timestamps: true });
+
 let userSchema = mongoose.Schema({
   Username: {
     type: String,
@@ -61,6 +110,10 @@ userSchema.methods.validatePassword = function (password) {
 
 let User = mongoose.model('User', userSchema);
 let Image = mongoose.model('Image', imageSchema);
+let Post = mongoose.model('Post', postSchema);
+let Community = mongoose.model('Community', communitySchema);
 
 module.exports.Image = Image;
 module.exports.User = User;
+module.exports.Post = Post;
+module.exports.Community = Community;
