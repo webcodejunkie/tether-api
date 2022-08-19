@@ -66,31 +66,22 @@ router.delete('/delete/:UserID/:GameID/', passport.authenticate('jwt', { session
 });
 
 router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
-
-  Users.findOne({ _id: req.params.UserID })
-    .then((user) => {
-      Post
-        .create({
-          from: user,
-          content: req.body.content,
-        })
-        .then((post) => {
-          console.log(post);
-          res.status(201).json(post);
-          Community.findOneAndUpdate({ Admin: req.params.UserID }, {
-            $push: { Posts: post }
-          }, { new: true },
-            (error, updatedData) => {
-              if (error) {
-                console.error(error);
-              } else {
-                res.json(updatedData);
-              }
-            });
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).send('Error: ' + err)
+  Post
+    .create({
+      from: req.params.UserID,
+      content: req.body.content,
+    })
+    .then((post) => {
+      console.log(post);
+      Community.findOneAndUpdate({ Admin: req.params.UserID }, {
+        $push: { Posts: post }
+      }, { new: true },
+        (error, updatedData) => {
+          if (error) {
+            console.error(error);
+          } else {
+            res.json(updatedData);
+          }
         });
     })
     .catch((err) => {
