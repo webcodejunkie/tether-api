@@ -65,7 +65,7 @@ router.delete('/delete/:UserID/:GameID/', passport.authenticate('jwt', { session
     });
 });
 
-router.put('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
   let user;
   let post;
 
