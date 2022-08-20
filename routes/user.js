@@ -102,24 +102,30 @@ router.post('/register', [
  * @requires upload upload image method
  * @param {string} image - String of the image.
  */
-router.post('/:Username/upload', upload('image'), (req, res, next) => {
-
-  const obj = {
-    user: req.params.user,
-    desc: req.body.desc,
-    img: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-      contentType: 'image/png'
+router.post('/:Username/upload', (req, res) => {
+  upload.single('avatar', req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      console.error('Error: ' + err);
+    } else if (err) {
+      console.error('Error: ' + err);
     }
-  }
-  ImageModel.create(obj, (err, item) => {
-    if (err) {
-      console.log(err);
+    const obj = {
+      user: req.params.user,
+      desc: req.body.desc,
+      img: {
+        data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+        contentType: 'image/png'
+      }
     }
-    else {
-      // item.save();
-      res.redirect('/');
-    }
+    ImageModel.create(obj, (err, item) => {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        // item.save();
+        res.redirect('/');
+      }
+    });
   });
 });
 
