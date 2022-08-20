@@ -5,7 +5,7 @@ const { check, validationResult } = require("express-validator");
 const passport = require('passport');
 require('../passport');
 
-const upload = require('../middlewares/upload');
+const upload = require('../index');
 const fs = require('fs');
 const path = require('path');
 
