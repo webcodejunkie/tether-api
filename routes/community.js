@@ -69,15 +69,15 @@ router.delete('/delete/:UserID/:GameID/', passport.authenticate('jwt', { session
 
 router.post('/:UserID/join/:CommunityID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Community.findOneAndUpdate({ _id: req.params.CommunityID }, {
-    $push: { Members: req.params.UserID }, $inc: { MembersCount: 1}
+    $push: { Members: req.params.UserID }, $inc: { MembersCount: 1 }
   }, { new: true },
-(error, updatedData) => {
-  if (error) {
-    console.error(error);
-  } else {
-    res.json(updatedData);
-  }
-});
+    (error, updatedData) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.json(updatedData);
+      }
+    });
 });
 
 router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {

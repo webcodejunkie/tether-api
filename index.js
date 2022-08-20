@@ -5,17 +5,14 @@ const express = require("express"),
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
-const { check, validationResult } = require("express-validator");
-
+// Uploading Images Modules
+const fs = require('fs');
+const path = require('path');
+require("dotenv").config();
 // Imported Routes
 const userRoute = require("./routes/user");
 const communityRoute = require('./routes/community');
-
 // MongoDB Connection
-
-require("dotenv").config();
-
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: false }, () => {
   console.log("Connected to Mongo");
 });
@@ -44,9 +41,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('common'));
 app.use(express.static(__dirname + '/uploads'));
 
+// Uploading Image Middleware
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+
+var upload = multer({ storage: storage });
+
 let auth = require('./auth')(app);
 
-const passport = require('passport');
 require('./passport');
 
 // API End-Points

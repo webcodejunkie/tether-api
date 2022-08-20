@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 let imageSchema = mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  name: String,
-  desc: String,
+  user: {
+    type: String
+  },
   image: {
     data: Buffer,
     contentType: String
@@ -42,7 +42,7 @@ let communitySchema = mongoose.Schema({
     type: Array,
     default: []
   },
-  MembersCount: { type: Number, default: 0},
+  MembersCount: { type: Number, default: 0 },
   Game: {
     type: String,
   },

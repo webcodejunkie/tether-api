@@ -11,7 +11,6 @@ const path = require('path');
 
 // Mongoose Models
 const Models = require('../models/models.js');
-
 const ImageModel = Models.Image;
 const Users = Models.User;
 
@@ -90,24 +89,25 @@ router.post('/register', [
  * @requires upload upload image method
  * @param {string} image - String of the image.
  */
-router.post('/upload', upload.single('image'), (req, res) => {
-  let obj = {
-    name: req.body.name,
+app.post('/:Username/upload', upload.single('image'), (req, res, next) => {
+
+  const obj = {
+    user: req.params.user,
     desc: req.body.desc,
-    image: {
-      data: fs.readFileSync(path.join('/uploads/' + req.file.path)),
+    img: {
+      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
       contentType: 'image/png'
     }
   }
-
-  ImageModel
-    .create(obj, (error, item) => {
-      if (error) {
-        console.log(error);
-      } else {
-        res.redirect('/');
-      }
-    })
+  ImageModel.create(obj, (err, item) => {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      // item.save();
+      res.redirect('/');
+    }
+  });
 });
 
 /**
