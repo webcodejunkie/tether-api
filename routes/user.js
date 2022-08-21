@@ -18,10 +18,10 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/')
+    cb(null, 'uploads/')
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, new Date().toISOString() + file.originalname);
   }
 });
 
@@ -103,7 +103,7 @@ router.post('/register', [
  * @param {string} image - String of the image.
  */
 router.post('/:Username/upload', upload.single('image'), (req, res) => {
-
+  console.log(req.file);
   const obj = {
     user: req.params.user,
     image: {
