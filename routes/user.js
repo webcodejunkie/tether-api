@@ -18,7 +18,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads')
+    cb(null, 'uploads/')
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '-' + Date.now())
@@ -108,7 +108,7 @@ router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
     user: req.params.user,
     desc: req.body.desc,
     img: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+      data: fs.readFileSync(path.join(__dirname + 'uploads/' + req.file.filename)),
       contentType: 'image/png'
     }
   }
