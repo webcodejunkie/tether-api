@@ -102,7 +102,7 @@ router.post('/register', [
  * @requires upload upload image method
  * @param {string} image - String of the image.
  */
-router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
+router.post('/:Username/upload', upload.single('image'), (req, res) => {
 
   const obj = {
     user: req.params.user,
