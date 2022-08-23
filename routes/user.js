@@ -18,10 +18,10 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname + 'uploads/'));
+    cb(null, path.join(__dirname + '/uploads/' + file.originalname))
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+    cb(null, file.fieldname + '-' + Date.now())
   }
 });
 
@@ -102,12 +102,13 @@ router.post('/register', [
  * @requires upload upload image method
  * @param {string} image - String of the image.
  */
-router.post('/:Username/upload', upload.single('image'), (req, res) => {
-  console.log(req.file);
+router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
+
   const obj = {
     user: req.params.user,
-    image: {
-      data: fs.readFileSync(path.join('uploads/' + req.file.filename)),
+    desc: req.body.desc,
+    img: {
+      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
       contentType: 'image/png'
     }
   }
