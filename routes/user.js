@@ -103,7 +103,6 @@ router.post('/register', [
  * @param {string} image - String of the image.
  */
 router.post('/:Username/upload', upload.single('image'), (req, res) => {
-
   const obj = {
     user: req.params.Username,
     image: {
@@ -112,13 +111,9 @@ router.post('/:Username/upload', upload.single('image'), (req, res) => {
     }
   }
 
-  Images.create(obj, (updatedData, err) => {
-    if (updatedData) {
-      console.log(updatedData);
-      res.status(201).send('Success! ' + updatedData + ' has been uploaded.');
-    } else {
-      console.error('Error: ' + err);
-    }
+  Images.create(obj, (updatedData) => {
+    console.log(updatedData);
+    res.status(201).send('Success! ' + updatedData + ' has been uploaded.');
   });
 });
 
