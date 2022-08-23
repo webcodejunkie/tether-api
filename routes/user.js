@@ -111,10 +111,13 @@ router.post('/:Username/upload', upload.single('image'), (req, res) => {
     }
   }
 
-  Images.create(obj, (updatedData) => {
-    console.log(updatedData);
-    res.status(201).send('Success! ' + updatedData + ' has been uploaded.');
-  });
+  Images.create(obj)
+    .then((img) => {
+      res.status(201).send('Success! ' + img + ' has been uploaded!')
+    })
+    .catch((err) => {
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 /**
