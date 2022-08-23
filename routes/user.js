@@ -106,8 +106,7 @@ router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
 
   const obj = {
     user: req.params.user,
-    desc: req.body.desc,
-    img: {
+    image: {
       data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
       contentType: 'image/png'
     }
