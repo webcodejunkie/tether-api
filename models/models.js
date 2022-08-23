@@ -9,7 +9,7 @@ let imageSchema = mongoose.Schema({
     data: Buffer,
     contentType: String
   }
-});
+}, { timestamps: true });
 
 let postSchema = mongoose.Schema({
   post: {

@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname + '/uploads/'))
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, new Date.now().toISOString().replace(/:g/, '-') + file.originalname)
   }
 });
 
@@ -105,7 +105,7 @@ router.post('/register', [
 router.post('/:Username/upload', upload.single('image'), (req, res) => {
 
   const obj = {
-    user: req.params.user,
+    user: req.params.Username,
     image: {
       data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
       contentType: 'image/png'
