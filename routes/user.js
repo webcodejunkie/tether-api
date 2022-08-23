@@ -102,7 +102,7 @@ router.post('/register', [
  * @requires upload upload image method
  * @param {string} image - String of the image.
  */
-router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
+router.post('/:Username/upload', upload.single('image'), (req, res) => {
 
   const obj = {
     user: req.params.user,
@@ -112,13 +112,9 @@ router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
     }
   }
 
-  ImageModel.create(obj, (err, item) => {
-    item.save();
-
-    if (err) {
-      console.error('Error: ' + err);
-    }
-  })
+  ImageModel.create(obj, (updatedData) => {
+    res.status(201).json(updatedData);
+  });
 });
 
 /**
