@@ -10,7 +10,7 @@ const path = require('path');
 
 // Mongoose Models
 const Models = require('../models/models.js');
-const ImageModel = Models.Image;
+const Images = Models.Image;
 const Users = Models.User;
 
 // Uploading Image Middleware
@@ -18,7 +18,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname + '/uploads/'))
+    cb(null)
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '-' + Date.now())
@@ -107,12 +107,12 @@ router.post('/:Username/upload', upload.single('image'), (req, res) => {
   const obj = {
     user: req.params.Username,
     image: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+      data: req.file.filename,
       contentType: 'image/png'
     }
   }
 
-  ImageModel.create(obj, (updatedData) => {
+  Images.create(obj, (updatedData) => {
     res.status(201).json(updatedData);
   });
 });
