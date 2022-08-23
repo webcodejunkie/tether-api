@@ -8,13 +8,13 @@ require('../passport');
 // Mongoose Models
 const Models = require('../models/models.js');
 
-const Community = Models.Community;
-const Post = Models.Post;
+const Communities = Models.Community;
+const Posts = Models.Post;
 const Users = Models.User;
 
 // Router Test
 router.get('/all', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Community.find()
+  Communities.find()
     .then((com) => {
       res.status(201).json(com);
     })
@@ -25,12 +25,12 @@ router.get('/all', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 router.post('/create/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Community.findOne({ Name: req.body.Name })
+  Communities.findOne({ Name: req.body.Name })
     .then((com) => {
       if (com) {
         return res.status(400).send(req.body.Name + ' not avalible, please choose a different name.')
       } else {
-        Community
+        Communities
           .create({
             Name: req.body.Name,
             Desc: req.body.Desc,
@@ -53,7 +53,7 @@ router.post('/create/:UserID/:GameID/', passport.authenticate('jwt', { session: 
 });
 
 router.delete('/delete/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Community.findOneAndDelete({ Admin: req.params.UserID })
+  Communities.findOneAndDelete({ Admin: req.params.UserID })
     .then((com) => {
       if (!com) {
         res.status(400).send(req.params.UserID + ' community not be found, try again.')
@@ -68,7 +68,7 @@ router.delete('/delete/:UserID/:GameID/', passport.authenticate('jwt', { session
 });
 
 router.post('/:UserID/join/:CommunityID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Community.findOneAndUpdate({ _id: req.params.CommunityID }, {
+  Communities.findOneAndUpdate({ _id: req.params.CommunityID }, {
     $push: { Members: req.params.UserID }, $inc: { MembersCount: 1 }
   }, { new: true },
     (error, updatedData) => {
@@ -88,7 +88,7 @@ router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }
     likes: 0,
     comments: [],
   }
-  Community.findOneAndUpdate({ Admin: req.params.UserID }, {
+  Communities.findOneAndUpdate({ Admin: req.params.UserID }, {
     $push: { Posts: postObj }
   }, { new: true },
     (error, updatedData) => {
