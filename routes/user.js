@@ -113,14 +113,11 @@ router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
   }
 
   ImageModel.create(obj, (err, item) => {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      // item.save();
-      res.redirect('/');
-    }
   })
+    .then((res) => {
+      res.status(201);
+      res.save();
+    })
     .catch((err) => {
       console.error('Error: ' + err);
     });
