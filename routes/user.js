@@ -120,6 +120,17 @@ router.post('/:Username/upload', upload.single('image'), (req, res) => {
     });
 });
 
+router.get('/:Username/avatar', (req, res) => {
+  Images.find({ user: req.params.Username })
+    .then((img) => {
+      res.status(201).json(img);
+    })
+    .catch((err) => {
+      console.error('Error: ' + err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 /**
  * Find All Players
  * @method FindPlayers
