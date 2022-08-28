@@ -8,7 +8,7 @@ require('../passport');
 const Models = require('../models/models.js');
 const Images = Models.Image;
 // AWS S3 Modules
-const s3Client = require('../libs/s3Client');
+const s3Client = require('../libs/s3Client').default;
 const { PutObjectCommand } = require('@aws-sdk/client-s3')
 
 router.post('/:Username/upload', (req, res) => {
@@ -23,6 +23,8 @@ router.post('/:Username/upload', (req, res) => {
     new PutObjectCommand(params)
   )
     .then((res) => {
+      const data = res.data;
+      console.log(data);
       console.log('successfully uploaded!');
     })
     .catch((err) => {
