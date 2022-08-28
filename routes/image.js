@@ -22,9 +22,9 @@ router.post('/:Username/upload', (req, res) => {
   s3Client.send(
     new PutObjectCommand(params)
   )
-    .then((res) => {
+    .then((result) => {
       res.status(201).send('Successfully uploaded!');
-      const data = res;
+      const data = result;
       console.log(data);
     })
     .catch((err) => {
