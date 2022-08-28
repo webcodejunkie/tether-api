@@ -23,12 +23,13 @@ router.post('/:Username/upload', (req, res) => {
     new PutObjectCommand(params)
   )
     .then((res) => {
-      const data = res.data;
+      res.status(201).send('Successfully uploaded!');
+      const data = res;
       console.log(data);
-      console.log('successfully uploaded!');
     })
     .catch((err) => {
       console.error('Error: ' + err);
+      res.status(500).send('Error:' + err);
     });
 })
 
