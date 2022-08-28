@@ -8,15 +8,15 @@ require('../passport');
 const Models = require('../models/models.js');
 const Images = Models.Image;
 // AWS S3 Modules
-const s3Client = require('../libs/s3Client').default;
+const s3Client = require('../libs/s3Client');
 const { PutObjectCommand } = require('@aws-sdk/client-s3')
 
 router.post('/:Username/upload', (req, res) => {
 
   const params = {
     Bucket: "tethermedia",
-    Key: req.params.Username + ' Avatar',
-    Body: req.body.Image
+    Key: "user",
+    Body: "image.jpeg"
   };
 
   s3Client.send(
