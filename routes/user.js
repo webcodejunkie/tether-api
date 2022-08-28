@@ -5,27 +5,10 @@ const { check, validationResult } = require("express-validator");
 const passport = require('passport');
 require('../passport');
 
-const fs = require('fs');
-const path = require('path');
-
 // Mongoose Models
 const Models = require('../models/models.js');
 const Images = Models.Image;
 const Users = Models.User;
-
-// Uploading Image Middleware
-const multer = require('multer');
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname + '/uploads/'))
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-});
-
-const upload = multer({ storage: storage });
 
 // Router Test
 router.get('/', (req, res) => {
@@ -94,30 +77,6 @@ router.post('/register', [
       res.status(500).send('Error:' + err);
     });
 
-});
-
-/**
- * Upload Image Method
- * @method Upload
- * @requires upload upload image method
- * @param {string} image - String of the image.
- */
-router.post('/:Username/upload', upload.single('image'), (req, res) => {
-  const obj = {
-    user: req.params.Username,
-    image: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-      contentType: 'image/png'
-    }
-  }
-
-  Images.create(obj)
-    .then((img) => {
-      res.status(201).send('Success! ' + img + ' has been uploaded!')
-    })
-    .catch((err) => {
-      res.status(500).send('Error: ' + err);
-    });
 });
 
 router.get('/:Username/avatar', (req, res) => {
