@@ -10,13 +10,18 @@ const Images = Models.Image;
 // AWS S3 Modules
 const s3Client = require('../libs/s3Client');
 const { PutObjectCommand } = require('@aws-sdk/client-s3')
+// File Path
+const fs = require('fs');
 
 router.post('/:Username/upload', (req, res) => {
 
+  const imagePath = req.files[0].path;
+  const blob = fs.readFileSync(imagePath);
+
   const params = {
-    Bucket: "tethermedia",
-    Key: "user",
-    Body: "image.jpeg"
+    Bucket: process.env.AWSBucket,
+    Key: req.files[0].originalFilename,
+    Body: blob
   };
 
   s3Client.send(
