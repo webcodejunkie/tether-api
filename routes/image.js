@@ -9,6 +9,7 @@ const Models = require('../models/models.js');
 const Images = Models.Image;
 // AWS S3 Modules
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const REGION = "us-east-1";
 const s3 = new S3Client({
   region: REGION,
   credentials: {
