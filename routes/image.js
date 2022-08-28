@@ -6,40 +6,35 @@ const passport = require('passport');
 require('../passport');
 // Mongoose Models
 const Models = require('../models/models.js');
-const Images = Models.Image;
-// AWS S3 Modules
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const REGION = "us-east-1";
-const s3 = new S3Client({
-  region: REGION,
-  credentials: {
-    accessKeyId: process.env.AWSAccessKeyId,
-    secretAccessKey: process.env.AWSSecretKey,
-  }
-});
-// Multer module to process Images
-const multer = require('multer');
-const multerS3 = require('multer-s3');
-// File Path
-const fs = require('fs');
+const Users = Models.User;
+// Require upload middleware
+const upload = require('../libs/upload');
 
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.AWSBucket,
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-      cb(null, Date.now().toString());
+const singleUpload = upload.single('avatar');
+
+router.post('/:Username/upload', (req, res) => {
+  singleUpload(req, res, function (err) {
+    if (err) {
+      return res.json({
+        success: false,
+        error: {
+          title: "Image Upload Error",
+          detail: err.message,
+          error: err,
+        }
+      });
+    } else {
+      res.send({
+        message: 'Uploaded!'
+      });
+      let update = { ProfilePicture: req.file.location };
+      Users.findOneAndUpdate(req.params.Username, update, { new: true })
+        .then((user) => res.status(200).json({ success: true, user: user }))
+        .catch((err) => {
+          res.status(500).json({ success: false, error: err })
+        });
     }
-  })
-})
-
-router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
-  res.send({
-    message: 'Uploaded!'
-  })
-})
+  });
+});
 
 module.exports = router;
