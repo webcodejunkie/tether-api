@@ -38,10 +38,7 @@ const upload = multer({
 
 router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
   res.send({
-    message: 'Uploaded!',
-    urls: req.files.map(function (file) {
-      return { url: file.location, name: file.key, type: file.mimetype, size: file.size };
-    })
+    message: 'Uploaded!'
   })
 })
 
