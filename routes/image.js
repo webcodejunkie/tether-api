@@ -8,34 +8,40 @@ require('../passport');
 const Models = require('../models/models.js');
 const Images = Models.Image;
 // AWS S3 Modules
-const s3Client = require('../libs/s3Client');
-const { PutObjectCommand } = require('@aws-sdk/client-s3')
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const s3 = new S3Client({
+  region: REGION,
+  credentials: {
+    accessKeyId: process.env.AWSAccessKeyId,
+    secretAccessKey: process.env.AWSSecretKey,
+  }
+});
+// Multer module to process Images
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 // File Path
 const fs = require('fs');
 
-router.post('/:Username/upload', (req, res) => {
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: process.env.AWSBucket,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString());
+    }
+  })
+})
 
-  const imagePath = req.body.file[0];
-  const blob = fs.readFileSync(imagePath);
-
-  const params = {
-    Bucket: process.env.AWSBucket,
-    Key: req.body.file[0].originalFilename,
-    Body: blob
-  };
-
-  s3Client.send(
-    new PutObjectCommand(params)
-  )
-    .then((result) => {
-      res.status(201).send('Successfully uploaded!');
-      const data = result;
-      console.log(data);
+router.post('/:Username/upload', upload.single('avatar'), (req, res) => {
+  res.send({
+    message: 'Uploaded!',
+    urls: req.files.map(function (file) {
+      return { url: file.location, name: file.key, type: file.mimetype, size: file.size };
     })
-    .catch((err) => {
-      console.error('Error: ' + err);
-      res.status(500).send('Error:' + err);
-    });
+  })
 })
 
 module.exports = router;
