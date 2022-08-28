@@ -8,8 +8,9 @@ const cors = require("cors");
 
 require("dotenv").config();
 // Imported Routes
-const userRoute = require("./routes/user");
+const userRoute = require('./routes/user');
 const communityRoute = require('./routes/community');
+const imageRoute = require('./routes/image');
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: false }, () => {
   console.log("Connected to Mongo");
@@ -51,6 +52,8 @@ app.use('/tether', userRoute);
 // Community Routes
 app.use('/tether/community', communityRoute);
 
+// Image Routes
+app.use('/tether/media', imageRoute);
 
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
