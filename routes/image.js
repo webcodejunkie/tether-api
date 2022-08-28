@@ -15,7 +15,7 @@ router.post('/:Username/upload', (req, res) => {
 
   const params = {
     Bucket: "tethermedia",
-    Key: req.params.Username,
+    Key: req.params.Username + ' Avatar',
     Body: req.body.Image
   };
 
