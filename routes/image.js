@@ -15,12 +15,12 @@ const fs = require('fs');
 
 router.post('/:Username/upload', (req, res) => {
 
-  const imagePath = req.files[0].path;
+  const imagePath = req.body.file[0];
   const blob = fs.readFileSync(imagePath);
 
   const params = {
     Bucket: process.env.AWSBucket,
-    Key: req.files[0].originalFilename,
+    Key: req.body.file[0].originalFilename,
     Body: blob
   };
 
