@@ -24,9 +24,6 @@ router.post('/:Username/upload', (req, res) => {
         }
       });
     }
-    res.send({
-      message: 'Uploaded!'
-    });
     let update = { ProfilePicture: req.file.location };
     Users.findOneAndUpdate(req.params.Username, update, { new: true })
       .then((user) => res.status(200).json({ success: true, user: user }))
