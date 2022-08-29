@@ -16,7 +16,6 @@ router.post('/:Username/upload', (req, res) => {
   singleUpload(req, res, function (err) {
     if (err) {
       return res.json({
-        status: 500,
         success: false,
         error: {
           title: "Image Upload Error",
@@ -24,18 +23,16 @@ router.post('/:Username/upload', (req, res) => {
           error: err,
         }
       });
-    } else {
-      res.send({
-        status: 200,
-        message: 'Uploaded!'
-      });
-      let update = { ProfilePicture: req.file.location };
-      Users.findOneAndUpdate(req.params.Username, update, { new: true })
-        .then((user) => res.status(200).json({ success: true, user: user }))
-        .catch((err) => {
-          res.status(500).json({ success: false, error: err })
-        });
     }
+    res.send({
+      message: 'Uploaded!'
+    });
+    let update = { ProfilePicture: req.file.location };
+    Users.findOneAndUpdate(req.params.Username, update, { new: true })
+      .then((user) => res.status(200).json({ success: true, user: user }))
+      .catch((err) => {
+        res.status(500).json({ success: false, error: err })
+      });
   });
 });
 
