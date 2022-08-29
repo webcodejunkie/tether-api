@@ -19,7 +19,7 @@ const upload = multer({
     contentType: multerS3.AUTO_CONTENT_TYPE,
     bucket: process.env.AWSBucket,
     metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.originalname + '-' + fieldName });
+      cb(null, { fieldName: file.originalname + '-' + file.fieldName });
     },
     key: function (req, file, cb) {
       cb(null, Date.now().toString() + file.originalname);
