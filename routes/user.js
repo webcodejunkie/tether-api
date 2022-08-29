@@ -7,7 +7,6 @@ require('../passport');
 
 // Mongoose Models
 const Models = require('../models/models.js');
-const Images = Models.Image;
 const Users = Models.User;
 
 // Router Test
@@ -77,17 +76,6 @@ router.post('/register', [
       res.status(500).send('Error:' + err);
     });
 
-});
-
-router.get('/:Username/avatar', (req, res) => {
-  Images.find({ user: req.params.Username })
-    .then((img) => {
-      res.status(201).json(img);
-    })
-    .catch((err) => {
-      console.error('Error: ' + err);
-      res.status(500).send('Error: ' + err);
-    });
 });
 
 /**

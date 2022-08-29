@@ -12,7 +12,7 @@ const upload = require('../libs/upload');
 
 const singleUpload = upload.single('avatar');
 
-router.post('/:Username/upload', (req, res) => {
+router.post('/:Username/upload', passport.authenticate('jwt', { session: false }), (req, res) => {
   singleUpload(req, res, function (err) {
     if (err) {
       return res.json({

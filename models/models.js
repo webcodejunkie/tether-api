@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-let imageSchema = mongoose.Schema({
-  user: {
-    type: String
-  },
-  image: {
-    data: Buffer,
-    contentType: String
-  }
-}, { timestamps: true });
-
 let postSchema = mongoose.Schema({
   post: {
     from: {
@@ -105,11 +95,9 @@ userSchema.methods.validatePassword = function (password) {
 }
 
 let User = mongoose.model('User', userSchema);
-let Image = mongoose.model('Image', imageSchema);
 let Post = mongoose.model('Post', postSchema);
 let Community = mongoose.model('Community', communitySchema);
 
-module.exports.Image = Image;
 module.exports.User = User;
 module.exports.Post = Post;
 module.exports.Community = Community;
