@@ -16,6 +16,7 @@ router.post('/:Username/upload', (req, res) => {
   singleUpload(req, res, function (err) {
     if (err) {
       return res.json({
+        status: 500,
         success: false,
         error: {
           title: "Image Upload Error",
@@ -25,6 +26,7 @@ router.post('/:Username/upload', (req, res) => {
       });
     } else {
       res.send({
+        status: 200,
         message: 'Uploaded!'
       });
       let update = { ProfilePicture: req.file.location };

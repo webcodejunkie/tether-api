@@ -14,7 +14,6 @@ const multerS3 = require('multer-s3');
 
 const upload = multer({
   storage: multerS3({
-    acl: 'public-read',
     s3: s3,
     bucket: process.env.AWSBucket,
     metadata: function (req, file, cb) {
