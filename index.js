@@ -5,6 +5,11 @@ const express = require("express"),
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+// Socket IO
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server);
 
 require("dotenv").config();
 // Imported Routes
@@ -55,7 +60,15 @@ app.use('/tether/community', communityRoute);
 // Image Routes
 app.use('/tether/media', imageRoute);
 
+// Socket.IO Connection
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
 const port = process.env.PORT || 8080;
+server.listen(port, () => {
+  console.log('listening on port' + port);
+});
 app.listen(port, '0.0.0.0', () => {
   console.log("Listening on port " + port);
 });
