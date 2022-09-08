@@ -51,6 +51,10 @@ require('./passport');
 
 // API End-Points
 
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to tether!');
+});
+
 // User Routes
 app.use('/tether', userRoute);
 
