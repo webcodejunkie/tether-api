@@ -2,22 +2,20 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 let postSchema = mongoose.Schema({
-  post: {
-    from: {
-      type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-    },
-    content: {
-      type: String,
-      maxLength: 250,
-    },
-    likes: {
-      type: Number,
-      default: 0
-    },
-    comments: {
-      type: Array,
-      default: []
-    }
+  from: {
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  },
+  content: {
+    type: String,
+    maxLength: 250,
+  },
+  likes: {
+    type: Number,
+    default: 0
+  },
+  comments: {
+    type: Array,
+    default: []
   }
 }, { timestamps: true });
 

@@ -81,32 +81,29 @@ router.post('/:UserID/join/:CommunityID', passport.authenticate('jwt', { session
 });
 
 router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  let postObj = {
-    from: req.params.UserID,
-    content: req.body.content,
-    postedDate: Date(),
-    likes: 0,
-    comments: [],
-  }
   Posts
-  .create(postObj)
-  .then((post) => {
-    res.status(201).json(post);
-    Communities.findOneAndUpdate({ Admin: req.params.UserID }, {
-      $push: { Posts: postObj }
-    }, { new: true },
-      (error, updatedData) => {
-        if (error) {
-          console.error(error);
-        } else {
-          res.json(updatedData);
-        }
-      });
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
+    .create({
+      from: req.params.UserID,
+      content: req.body.content,
+    })
+    .then((post) => {
+      console.log(post);
+      res.status(201).json(post);
+      Communities.findOneAndUpdate({ Admin: req.params.UserID }, {
+        $push: { Posts: post }
+      }, { new: true },
+        (error, updatedData) => {
+          if (error) {
+            console.error(error);
+          } else {
+            res.json(updatedData);
+          }
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 module.exports = router;
