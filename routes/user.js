@@ -8,6 +8,7 @@ require('../passport');
 // Mongoose Models
 const Models = require('../models/models.js');
 const Users = Models.User;
+const Posts = Models.Post;
 
 // Router Test
 router.get('/', (req, res) => {
@@ -26,7 +27,7 @@ router.get('/', (req, res) => {
  * @param {string} Region - The user's region.
  * @param {string} Country - The user's country.
  * @param {string} ProfilePicture - User's avatar.
- * 
+ *
  * @return {object} returns the posted user that was created
  * @throws if Username, Password, Email, and Birthday aren't filled out.
  */
@@ -82,7 +83,7 @@ router.post('/register', [
  * Find All Players
  * @method FindPlayers
  * @summary - Request to find all players that have signed up and reside in the database for users.
- * 
+ *
  */
 router.get('/findplayers', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
@@ -99,7 +100,7 @@ router.get('/findplayers', passport.authenticate('jwt', { session: false }), (re
  * Find User Method
  * @method GetUser
  * @param {string} Username - Username of the user that is to be searched.
- * @return {object} Returns information on the requested user. 
+ * @return {object} Returns information on the requested user.
  * @throws If the user isn't found.
  */
 
@@ -167,7 +168,7 @@ router.put('/:Username', passport.authenticate('jwt', { session: false }),
  * @method DeleteProfile
  * @summary If the current user is found, delete the object from the database
  * @param {string} Username - The username of the current user
- * 
+ *
  * @return {status} Return status 200 that the profile has been deleted
  * @throws If user doesn't exist
  */
@@ -192,7 +193,7 @@ router.delete('/:Username', passport.authenticate('jwt', { session: false }), (r
  * @summary Follow a player that user wants to append to their friends list.
  * @param {string} Username - The username of the current user
  * @param {string} UserID - The userId of the recipient
- * 
+ *
  * @return {object} Return the current user with the updated friends array
  * @throws If the request couldn't be resolved
  */
@@ -215,7 +216,7 @@ router.post('/:Username/user/:UserID', passport.authenticate('jwt', { session: f
  * @summary Follow a game that user wants to append to their favorites list.
  * @param {string} Username - The username of the current user
  * @param {string} GameID - The GameId of the game object
- * 
+ *
  * @return {object} Return the current user with the updated favorites array
  * @throws If the request couldn't be resolved
  */
@@ -238,7 +239,7 @@ router.post('/:Username/game/:GameID', passport.authenticate('jwt', { session: f
  * @summary Unfollow a game that user wants to remove to their favorites list.
  * @param {string} Username - The username of the current user
  * @param {string} GameID - The gameId of the recipient
- * 
+ *
  * @return {object} Retu rn the current user with the updated favorites array
  * @throws If the request couldn't be resolved
  */
@@ -261,7 +262,7 @@ router.delete('/:Username/game/:GameID', passport.authenticate('jwt', { session:
  * @summary UnFollow a player that user wants to remove from their friends list.
  * @param {string} Username - The username of the current user
  * @param {string} UserID - The userId of the recipient
- * 
+ *
  * @return {object} Return the current user with the updated friends array
  * @throws If the request couldn't be resolved
  */
@@ -278,5 +279,25 @@ router.delete('/:Username/user/:UserID', passport.authenticate('jwt', { session:
       }
     });
 });
+
+router.post('/:UserID/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  let postObj = {
+    from: req.params.UserID,
+    content: req.body.content,
+    postedDate: Date(),
+    likes: 0,
+    comments: [],
+  }
+  Posts.find({}, {
+    $push: { Posts: postObj }
+  }, { new: true },
+  (error, updatedData) => {
+    if (error) {
+      console.error(error);
+    } else {
+      res.json(updatedData);
+    }
+  });
+})
 
 module.exports = router;
