@@ -88,17 +88,18 @@ router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }
     })
     .then((post) => {
       console.log(post);
-      res.status(201).json(post);
       Communities.findOneAndUpdate({ Admin: req.params.UserID }, {
         $push: { Posts: post }
       }, { new: true },
         (error, updatedData) => {
           if (error) {
+            res.status(500).send('Error: ' + error);
             console.error(error);
           } else {
             res.json(updatedData);
           }
         });
+      res.status(201).json(post);
     })
     .catch((err) => {
       console.error(err);
