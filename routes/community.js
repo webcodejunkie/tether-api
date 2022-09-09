@@ -87,18 +87,19 @@ router.post('/:UserID/:GameID/', passport.authenticate('jwt', { session: false }
       content: req.body.content,
     })
     .then((post) => {
-      console.log(post);
-      //      Communities.findOneAndUpdate({ Admin: req.params.UserID }, {
-      //        $push: { Posts: post }
-      //      }, { new: true },
-      //        (error, updatedData) => {
-      //          if (error) {
-      //            res.status(500).send('Error: ' + error);
-      //            console.error(error);
-      //          } else {
-      //            res.json(updatedData);
-      //          }
-      //        });
+      Communities.findOneAndUpdate({ Admin: req.params.UserID }, {
+        $push: { Posts: post }
+      }, { new: true },
+        (error, updatedData) => {
+          if (error) {
+            res.status(500).send('Error: ' + error);
+            console.error(error);
+          } else {
+            res.json(updatedData);
+          }
+        });
+    })
+    .then((post) => {
       res.status(201).json(post);
     })
     .catch((err) => {
