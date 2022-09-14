@@ -298,6 +298,37 @@ router.post('/:UserID/', passport.authenticate('jwt', { session: false }), (req,
       res.json(updatedData);
     }
   });
-})
+});
+
+// Post A Message
+router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Posts
+    .create({
+      from: req.params.UserID,
+      content: req.body.content,
+    })
+    .then((post) => {
+      console.log(post);
+      res.status(201).json(post);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+// Get Feed Of All Posts
+router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Posts
+    .find({})
+    .then((posts) => {
+      console.log(posts);
+      res.status(201).json(posts);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
 module.exports = router;
