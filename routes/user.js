@@ -319,11 +319,10 @@ router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), 
 
 // Get Feed Of All Posts
 router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Posts
-    .find()
+  Posts.find()
     .then((posts) => {
       console.log(posts);
-      res.status(201).send(posts);
+      res.status(201).json(posts);
     })
     .catch((err) => {
       console.error(err);
