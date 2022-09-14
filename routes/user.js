@@ -323,7 +323,7 @@ router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res)
     .find()
     .then((posts) => {
       console.log(posts);
-      res.status(201).json(posts);
+      res.status(201).send(posts);
     })
     .catch((err) => {
       console.error(err);
