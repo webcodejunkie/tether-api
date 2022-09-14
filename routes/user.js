@@ -304,7 +304,7 @@ router.post('/:UserID/', passport.authenticate('jwt', { session: false }), (req,
 router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), (req, res) => {
   Posts
     .create({
-      from: req.body.UserID,
+      from: req.body.from,
       content: req.body.content,
     })
     .then((post) => {
