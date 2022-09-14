@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 let postSchema = mongoose.Schema({
   from: {
-    type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    type: String
   },
   content: {
     type: String,
