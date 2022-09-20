@@ -280,26 +280,6 @@ router.delete('/:Username/user/:UserID', passport.authenticate('jwt', { session:
     });
 });
 
-router.post('/:UserID/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  let postObj = {
-    from: req.params.UserID,
-    content: req.body.content,
-    postedDate: Date(),
-    likes: 0,
-    comments: [],
-  }
-  Posts.find({}, {
-    $push: { Posts: postObj }
-  }, { new: true },
-  (error, updatedData) => {
-    if (error) {
-      console.error(error);
-    } else {
-      res.json(updatedData);
-    }
-  });
-});
-
 // Post A Message
 router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), (req, res) => {
   Posts
