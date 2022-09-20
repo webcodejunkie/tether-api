@@ -301,6 +301,7 @@ router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), 
 router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
   Posts.find()
     .then((posts) => {
+      if (posts === null) return res.status(500).send('Error');
       console.log(posts);
       res.status(201).json(posts);
     })
