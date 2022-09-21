@@ -66,7 +66,7 @@ app.use('/tether/community', communityRoute);
 app.use('/tether/media', imageRoute);
 
 // Post Routes
-app.use('posts', postRoute);
+app.use('/posts', postRoute);
 
 // Socket.IO Connection
 io.on('connection', (socket) => {
