@@ -16,6 +16,7 @@ require("dotenv").config();
 const userRoute = require('./routes/user');
 const communityRoute = require('./routes/community');
 const imageRoute = require('./routes/image');
+const postRoute = require('./routes/post');
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: false }, () => {
   console.log("Connected to Mongo");
@@ -63,6 +64,9 @@ app.use('/tether/community', communityRoute);
 
 // Image Routes
 app.use('/tether/media', imageRoute);
+
+// Post Routes
+app.use('posts', postRoute);
 
 // Socket.IO Connection
 io.on('connection', (socket) => {
