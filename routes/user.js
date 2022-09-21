@@ -86,7 +86,7 @@ router.post('/register', [
  *
  */
 router.get('/findplayers', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.find()
+  Users.find({})
     .then((users) => {
       res.status(201).json(users);
     })
@@ -299,8 +299,7 @@ router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), 
 
 // Get Feed Of All Posts
 router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Posts
-    .find()
+  Posts.find({})
     .then((post) => {
       res.status(201).json(post);
     })
