@@ -301,7 +301,7 @@ router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), 
 router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
   Posts.find({})
     .then((post) => {
-      res.status(201).json(post);
+      res.status(201).send('All posts have been sent!');
     })
     .catch((err) => {
       console.error(err);
