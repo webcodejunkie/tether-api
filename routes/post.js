@@ -10,7 +10,9 @@ const Posts = Models.Post;
 router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), (req, res) => {
   Posts
     .create({
-      from: req.body.from,
+      'from.UserID': req.body.UserID,
+      'from.Avatar': req.body.Avatar,
+      'from.Username': req.body.Username,
       content: req.body.content,
     })
     .then((post) => {
@@ -25,14 +27,14 @@ router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), 
 
 // Get Feed Of All Posts
 router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
-    Posts.find({})
-      .then((posts) => {
-        res.status(201).json(posts);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
+  Posts.find({})
+    .then((posts) => {
+      res.status(201).json(posts);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
-  module.exports = router;
+module.exports = router;

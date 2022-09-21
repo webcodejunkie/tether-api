@@ -3,7 +3,15 @@ const bcrypt = require('bcrypt');
 
 let postSchema = mongoose.Schema({
   from: {
-    type: String
+    Avatar: {
+      type: String
+    },
+    Username: {
+      type: String
+    },
+    UserID: {
+      type: String
+    }
   },
   content: {
     type: String,

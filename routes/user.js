@@ -13,7 +13,7 @@ const Posts = Models.Post;
 // Router Test
 router.get('/', (req, res) => {
   res.send('youre in the user route :)');
-})
+});
 
 /**
  * Register Method
