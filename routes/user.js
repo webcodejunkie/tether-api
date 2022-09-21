@@ -298,6 +298,7 @@ router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), 
 });
 
 // Get Feed Of All Posts
+/* 
 router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
   Posts.find({})
     .then((post) => {
@@ -308,5 +309,5 @@ router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res)
       res.status(500).send('Error: ' + err);
     });
 });
-
+ */
 module.exports = router;
