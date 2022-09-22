@@ -27,7 +27,7 @@ router.post('/post/:UserID/', passport.authenticate('jwt', { session: false }), 
 
 // Get Feed Of All Posts
 router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Posts.find({}, { sort: { $natural: -1 } })
+  Posts.find({}).sort({ age: -1, posts: 1 })
     .then((posts) => {
       res.status(201).json(posts);
     })
