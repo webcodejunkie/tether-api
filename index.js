@@ -70,6 +70,7 @@ app.use('/posts', postRoute);
 // Socket.IO Connection
 io.on('connection', (socket) => {
 	console.log('a user connected');
+	socket.emit('message', 'Hello World!');
 });
 
 const port = process.env.PORT || 8080;
