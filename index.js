@@ -1,6 +1,6 @@
 const express = require("express"),
-  morgan = require("morgan"),
-  bodyParser = require("body-parser");
+	morgan = require("morgan"),
+	bodyParser = require("body-parser");
 
 const app = express();
 const mongoose = require("mongoose");
@@ -8,8 +8,7 @@ const cors = require("cors");
 // Socket IO
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require('socket.io');
-const io = new Server(server);
+const io = require('socket.io')(3000);
 
 require("dotenv").config();
 // Imported Routes
@@ -19,21 +18,21 @@ const imageRoute = require('./routes/image');
 const postRoute = require('./routes/post');
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: false }, () => {
-  console.log("Connected to Mongo");
+	console.log("Connected to Mongo");
 });
 
 
 // Cors Policy
 let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000', 'https://webcodejunkie.github.io'];
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      let message = 'The CORS policy for this application does not allow access from origin' + origin;
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  }
+	origin: (origin, callback) => {
+		if (!origin) return callback(null, true);
+		if (allowedOrigins.indexOf(origin) === -1) {
+			let message = 'The CORS policy for this application does not allow access from origin' + origin;
+			return callback(new Error(message), false);
+		}
+		return callback(null, true);
+	}
 }));
 
 
@@ -53,7 +52,7 @@ require('./passport');
 // API End-Points
 
 app.get('/', (req, res) => {
-  res.status(200).send('Welcome to tether!');
+	res.status(200).send('Welcome to tether!');
 });
 
 // User Routes
@@ -70,12 +69,12 @@ app.use('/posts', postRoute);
 
 // Socket.IO Connection
 io.on('connection', (socket) => {
-  console.log('a user connected');
+	console.log('a user connected');
 });
 
 const port = process.env.PORT || 8080;
 server.listen(port, '0.0.0.0', () => {
-  console.log("Listening on port " + port);
+	console.log("Listening on port " + port);
 });
 
 //app.listen(port, '0.0.0.0', () => {
