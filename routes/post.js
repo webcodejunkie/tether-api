@@ -39,7 +39,7 @@ router.get('/feed', passport.authenticate('jwt', { session: false }), (req, res)
 
 // Get Users Posts
 router.get('/:UserID/posts', passport.authenticate('jwt', { session: false }), (req, res) => {
-	Posts.find({ 'from.UserID ': req.body.UserID }, { createdAt: -1 })
+	Posts.find({ 'from.UserID ': req.body.UserID }).sort({ createdAt: -1 })
 		.then((posts) => {
 			res.status(201).json(posts);
 		})
