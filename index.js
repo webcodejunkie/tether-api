@@ -1,11 +1,10 @@
 const express = require("express"),
 	app = express(),
-	http = require('http'),
-	server = http.createServer(app),
-	morgan = require("morgan"),
-	bodyParser = require("body-parser"),
-	io = require('socket.io').listen(server);
+	server = require("http").createServer(app),
+	io = require("socket.io").listen(server);
 
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -66,15 +65,15 @@ app.use('/tether/media', imageRoute);
 // Post Routes
 app.use('/posts', postRoute);
 
+const port = process.env.PORT || 8080;
+server.listen(port, '0.0.0.0', () => {
+	console.log("Listening on port " + port);
+});
+
 // Socket.IO Connection
 io.on('connection', (socket) => {
 	console.log('a user connected');
 	socket.emit('message', 'Hello World!');
-});
-
-const port = process.env.PORT || 8080;
-server.listen(port, '0.0.0.0', () => {
-	console.log("Listening on port " + port);
 });
 
 //app.listen(port, '0.0.0.0', () => {
