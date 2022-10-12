@@ -1,14 +1,13 @@
 const express = require("express"),
+	app = express(),
+	http = require('http'),
+	server = http.createServer(app),
 	morgan = require("morgan"),
-	bodyParser = require("body-parser");
+	bodyParser = require("body-parser"),
+	io = require('socket.io').listen(server);
 
-const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-// Socket IO
-const http = require('http');
-const server = http.createServer(app);
-const io = require('socket.io')(3000);
 
 require("dotenv").config();
 // Imported Routes
