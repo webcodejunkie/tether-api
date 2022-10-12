@@ -1,7 +1,7 @@
 const express = require("express"),
 	app = express(),
 	server = require("http").createServer(app),
-	io = require("socket.io").listen(server);
+	io = require("socket.io")(server);
 
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
