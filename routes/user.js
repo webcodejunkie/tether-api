@@ -12,7 +12,7 @@ const Posts = Models.Post;
 
 // Router Test
 router.get('/', (req, res) => {
-  res.send('youre in the user route :)');
+	res.send('youre in the user route :)');
 });
 
 /**
@@ -32,50 +32,49 @@ router.get('/', (req, res) => {
  * @throws if Username, Password, Email, and Birthday aren't filled out.
  */
 router.post('/register', [
-  check('Username', 'Username is required').not().isEmpty(),
-  check('Username', 'Username is required').isLength({ max: 10 }),
-  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-  check('Password', 'Password is required').not().isEmpty(),
-  check('Password', 'Password must be more then 8 characters').isLength({ min: 8 }),
-  check('Email', 'Email does not appear to be valid').isEmail(),
-  check('Bio', 'Max characters - 250').isLength({ max: 250 })
+	check('Username', 'Username is required').not().isEmpty(),
+	check('Username', 'Username is required').isLength({ max: 10 }),
+	check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+	check('Password', 'Password is required').not().isEmpty(),
+	check('Password', 'Password must be more then 8 characters').isLength({ min: 8 }),
+	check('Email', 'Email does not appear to be valid').isEmail(),
+	check('Bio', 'Max characters - 250').isLength({ max: 250 })
 ], (req, res) => {
 
-  let errors = validationResult(req);
+	let errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
 
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username }) // Check to see if the User entered already exists
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
-            ProfilePicture: req.body.ProfilePicture,
-            Bio: req.body.Bio,
-            PlayerType: req.body.PlayerType,
-            Country: req.body.Country,
-            Region: req.body.Region,
-          })
-          .then((user) => { res.status(201).json(user) })
-          .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error:' + err);
-          });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error:' + err);
-    });
+	let hashedPassword = Users.hashPassword(req.body.Password);
+	Users.findOne({ Username: req.body.Username }) // Check to see if the User entered already exists
+		.then((user) => {
+			if (user) {
+				return res.status(400).send(req.body.Username + ' already exists');
+			} else {
+				Users
+					.create({
+						Username: req.body.Username,
+						Password: hashedPassword,
+						Email: req.body.Email,
+						Birthday: req.body.Birthday,
+						Bio: req.body.Bio,
+						PlayerType: req.body.PlayerType,
+						Country: req.body.Country,
+						Region: req.body.Region,
+					})
+					.then((user) => { res.status(201).json(user) })
+					.catch((err) => {
+						console.error(err);
+						res.status(500).send('Error:' + err);
+					});
+			}
+		})
+		.catch((err) => {
+			console.error(err);
+			res.status(500).send('Error:' + err);
+		});
 
 });
 
@@ -86,14 +85,14 @@ router.post('/register', [
  *
  */
 router.get('/findplayers', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.find({})
-    .then((users) => {
-      res.status(201).json(users);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error' + error);
-    });
+	Users.find({})
+		.then((users) => {
+			res.status(201).json(users);
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).send('Error' + error);
+		});
 });
 
 /**
@@ -105,14 +104,14 @@ router.get('/findplayers', passport.authenticate('jwt', { session: false }), (re
  */
 
 router.get('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ Username: req.params.Username })
-    .then((user) => {
-      res.status(201).json(user);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error' + error);
-    });
+	Users.findOne({ Username: req.params.Username })
+		.then((user) => {
+			res.status(201).json(user);
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).send('Error' + error);
+		});
 });
 
 /**
@@ -127,42 +126,42 @@ router.get('/:Username', passport.authenticate('jwt', { session: false }), (req,
  */
 
 router.put('/:Username', passport.authenticate('jwt', { session: false }),
-  [
-    check('Username', 'Username is required').not().isEmpty(),
-    check('Username', 'Username is required').isLength({ min: 5 }),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Password', 'Password must be more then 8 characters').isLength({ min: 8 }),
-    check('Email', 'Email does not appear to be valid').isEmail(),
-    check('Bio', 'Max characters - 250').isLength({ max: 250 })
-  ], (req, res) => {
-    let errors = validationResult(req)
+	[
+		check('Username', 'Username is required').not().isEmpty(),
+		check('Username', 'Username is required').isLength({ min: 5 }),
+		check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+		check('Password', 'Password is required').not().isEmpty(),
+		check('Password', 'Password must be more then 8 characters').isLength({ min: 8 }),
+		check('Email', 'Email does not appear to be valid').isEmail(),
+		check('Bio', 'Max characters - 250').isLength({ max: 250 })
+	], (req, res) => {
+		let errors = validationResult(req)
 
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() });
+		}
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
+		let hashedPassword = Users.hashPassword(req.body.Password);
 
-    Users.findOneAndUpdate({ Username: req.params.Username }, {
-      $set:
-      {
-        Username: req.body.Username,
-        Password: hashedPassword,
-        Email: req.body.Email,
-        Bio: req.body.Bio
-      }
-    }, { new: true },
-      (error, updatedUser) => {
-        if (error) {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        } else {
-          res.json(updatedUser);
-        }
-      })
+		Users.findOneAndUpdate({ Username: req.params.Username }, {
+			$set:
+			{
+				Username: req.body.Username,
+				Password: hashedPassword,
+				Email: req.body.Email,
+				Bio: req.body.Bio
+			}
+		}, { new: true },
+			(error, updatedUser) => {
+				if (error) {
+					console.error(error);
+					res.status(500).send('Error: ' + error);
+				} else {
+					res.json(updatedUser);
+				}
+			})
 
-  });
+	});
 
 /**
  * @method DeleteProfile
@@ -174,18 +173,18 @@ router.put('/:Username', passport.authenticate('jwt', { session: false }),
  */
 
 router.delete('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndRemove({ Username: req.params.Username })
-    .then((user) => {
-      if (!user) {
-        res.status(400).send(req.params.Username + ' could not be found, please try again.');
-      } else {
-        res.status(200).send(req.params.Username + ' profile has been deleted, sorry to see you go.')
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
+	Users.findOneAndRemove({ Username: req.params.Username })
+		.then((user) => {
+			if (!user) {
+				res.status(400).send(req.params.Username + ' could not be found, please try again.');
+			} else {
+				res.status(200).send(req.params.Username + ' profile has been deleted, sorry to see you go.')
+			}
+		})
+		.catch((err) => {
+			console.error(err);
+			res.status(500).send('Error: ' + err);
+		});
 });
 
 /**
@@ -199,16 +198,16 @@ router.delete('/:Username', passport.authenticate('jwt', { session: false }), (r
  */
 
 router.post('/:Username/user/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, {
-    $push: { Friends: req.params.UserID }
-  }, { new: true },
-    (error, updatedUser) => {
-      if (error) {
-        console.error(error);
-      } else {
-        res.json(updatedUser);
-      }
-    });
+	Users.findOneAndUpdate({ Username: req.params.Username }, {
+		$push: { Friends: req.params.UserID }
+	}, { new: true },
+		(error, updatedUser) => {
+			if (error) {
+				console.error(error);
+			} else {
+				res.json(updatedUser);
+			}
+		});
 });
 
 /**
@@ -222,16 +221,16 @@ router.post('/:Username/user/:UserID', passport.authenticate('jwt', { session: f
  */
 
 router.post('/:Username/game/:GameID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, {
-    $push: { Favorites: req.params.GameID }
-  }, { new: true },
-    (error, updatedUser) => {
-      if (error) {
-        console.error(error);
-      } else {
-        res.json(updatedUser);
-      }
-    });
+	Users.findOneAndUpdate({ Username: req.params.Username }, {
+		$push: { Favorites: req.params.GameID }
+	}, { new: true },
+		(error, updatedUser) => {
+			if (error) {
+				console.error(error);
+			} else {
+				res.json(updatedUser);
+			}
+		});
 });
 
 /**
@@ -245,16 +244,16 @@ router.post('/:Username/game/:GameID', passport.authenticate('jwt', { session: f
  */
 
 router.delete('/:Username/game/:GameID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, {
-    $pull: { Favorites: req.params.GameID }
-  }, { new: true },
-    (error, updatedUser) => {
-      if (error) {
-        console.error(error);
-      } else {
-        res.json(updatedUser);
-      }
-    });
+	Users.findOneAndUpdate({ Username: req.params.Username }, {
+		$pull: { Favorites: req.params.GameID }
+	}, { new: true },
+		(error, updatedUser) => {
+			if (error) {
+				console.error(error);
+			} else {
+				res.json(updatedUser);
+			}
+		});
 });
 
 /**
@@ -268,16 +267,16 @@ router.delete('/:Username/game/:GameID', passport.authenticate('jwt', { session:
  */
 
 router.delete('/:Username/user/:UserID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, {
-    $pull: { Friends: req.params.UserID }
-  }, { new: true },
-    (error, updatedUser) => {
-      if (error) {
-        console.error(error);
-      } else {
-        res.json(updatedUser);
-      }
-    });
+	Users.findOneAndUpdate({ Username: req.params.Username }, {
+		$pull: { Friends: req.params.UserID }
+	}, { new: true },
+		(error, updatedUser) => {
+			if (error) {
+				console.error(error);
+			} else {
+				res.json(updatedUser);
+			}
+		});
 });
 
 module.exports = router;
