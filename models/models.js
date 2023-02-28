@@ -65,12 +65,12 @@ let userSchema = mongoose.Schema({
 		required: true
 	},
 	Email: { type: String, required: true },
-	Birthday: { type: Date, required: true },
+	Birthday: { type: Date },
 	ProfilePicture: {
 		type: String,
 		default: "https://tethermedia.s3.amazonaws.com/default/galaxybug.png"
 	},
-	Bio: { type: String, required: true },
+	Bio: { type: String },
 	PlayerType: {
 		type: String,
 	},
