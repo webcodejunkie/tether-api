@@ -33,16 +33,19 @@ router.get('/', (req, res) => {
  */
 router.post('/register', [
 	check('Username', 'Username is required').not().isEmpty(),
-	check('Username', 'Username is required').isLength({ max: 10 }),
+	check('Username', 'Username is too small! min characters is 5.').not().isLength({ min: 5 }),
+	check('Username', 'Username is too big!, max character is 14.').isLength({ max: 14 }),
 	check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
 	check('Password', 'Password is required').not().isEmpty(),
-	check('Password', 'Password must be more then 8 characters').isLength({ min: 8 }),
+	check('Password', 'Password is too big!').isLength({ max: 15 }),
+	check('Password', 'Password must be more then 8 characters').not().isLength({ min: 8 }),
 	check('Email', 'Email does not appear to be valid').isEmail(),
 	check('Bio', 'Max characters - 250').isLength({ max: 250 })
 ], (req, res) => {
 
 	let errors = validationResult(req);
 
+	// Check here for status code 422 for unprocessable entity
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}

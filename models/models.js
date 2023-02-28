@@ -65,7 +65,7 @@ let userSchema = mongoose.Schema({
 		required: true
 	},
 	Email: { type: String, required: true },
-	Birthday: { type: Date },
+	Birthday: { type: Date, required: true },
 	ProfilePicture: {
 		type: String,
 		default: "https://tethermedia.s3.amazonaws.com/default/galaxybug.png"
@@ -73,12 +73,15 @@ let userSchema = mongoose.Schema({
 	Bio: { type: String },
 	PlayerType: {
 		type: String,
+		required: true
 	},
 	Country: {
 		type: String,
+		required: true
 	},
 	Region: {
 		type: String,
+		required: true
 	},
 	Friends: {
 		type: Array,
