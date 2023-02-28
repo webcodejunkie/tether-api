@@ -12,25 +12,25 @@ const upload = require('../libs/upload');
 
 const singleUpload = upload.single('avatar');
 
-router.post('/:Username/upload', passport.authenticate('jwt', { session: false }), (req, res) => {
-  singleUpload(req, res, function (err) {
-    if (err) {
-      return res.json({
-        success: false,
-        error: {
-          title: "Image Upload Error",
-          detail: err.message,
-          error: err,
-        }
-      });
-    }
-    let update = { ProfilePicture: req.file.location };
-    Users.findOneAndUpdate(req.params.Username, update, { new: true })
-      .then((user) => res.status(200).json({ success: true, user: user }))
-      .catch((err) => {
-        res.status(500).json({ success: false, error: err })
-      });
-  });
+router.post('/:Username/upload', (req, res) => {
+	singleUpload(req, res, function (err) {
+		if (err) {
+			return res.json({
+				success: false,
+				error: {
+					title: "Image Upload Error",
+					detail: err.message,
+					error: err,
+				}
+			});
+		}
+		let update = { ProfilePicture: req.file.location };
+		Users.findOneAndUpdate(req.params.Username, update, { new: true })
+			.then((user) => res.status(200).json({ success: true, user: user }))
+			.catch((err) => {
+				res.status(500).json({ success: false, error: err })
+			});
+	});
 });
 
 module.exports = router;
