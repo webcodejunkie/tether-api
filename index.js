@@ -2,7 +2,20 @@ const express = require("express"),
 	app = express(),
 	server = require("http").createServer(app);
 
-const io = require("socket.io")(server);
+// Cors Policy
+let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000', 'https://webcodejunkie.github.io'];
+const io = require("socket.io")(server, {
+	cors: {
+		origin: (origin, callback) => {
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.indexOf(origin) === -1) {
+				let message = 'The CORS policy for this application does not allow access from origin' + origin;
+				return callback(new Error(message), false);
+			}
+			return callback(null, true);
+		}
+	}
+});
 
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
@@ -19,19 +32,6 @@ const postRoute = require('./routes/post');
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, autoIndex: false }, () => {
 	console.log("Connected to Mongo");
 });
-
-// Cors Policy
-let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000', 'https://webcodejunkie.github.io'];
-app.use(cors({
-	origin: (origin, callback) => {
-		if (!origin) return callback(null, true);
-		if (allowedOrigins.indexOf(origin) === -1) {
-			let message = 'The CORS policy for this application does not allow access from origin' + origin;
-			return callback(new Error(message), false);
-		}
-		return callback(null, true);
-	}
-}));
 
 // Socket.IO Connection
 io.on('connection', (socket) => {
