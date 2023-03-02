@@ -19,6 +19,12 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
 	console.log("Connected to Mongo");
 });
 
+// Socket.IO Connection
+io.on('connection', function (socket) {
+	console.log('a user connected');
+	socket.emit('message', 'Hello World!');
+});
+
 
 // Cors Policy
 let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000', 'https://webcodejunkie.github.io'];
@@ -64,12 +70,6 @@ app.use('/tether/media', imageRoute);
 
 // Post Routes
 app.use('/posts', postRoute);
-
-// Socket.IO Connection
-io.on('connection', function (socket) {
-	console.log('a user connected');
-	socket.emit('message', 'Hello World!');
-});
 
 const port = process.env.PORT || 8080;
 server.listen(port, '0.0.0.0', () => {
