@@ -65,15 +65,15 @@ app.use('/tether/media', imageRoute);
 // Post Routes
 app.use('/posts', postRoute);
 
+// Socket.IO Connection
+io.on('connection', function (socket) {
+	console.log('a user connected');
+	socket.emit('message', 'Hello World!');
+});
+
 const port = process.env.PORT || 8080;
 server.listen(port, '0.0.0.0', () => {
 	console.log("Listening on port " + port);
-});
-
-// Socket.IO Connection
-io.on('connection', (socket) => {
-	console.log('a user connected');
-	socket.emit('message', 'Hello World!');
 });
 
 //app.listen(port, '0.0.0.0', () => {
