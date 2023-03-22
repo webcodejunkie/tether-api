@@ -51,6 +51,10 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		console.log('A user disconnected');
 	});
+	socket.on("connected_user", data, () => {
+		socket.id = data;
+		console.log(data);
+	})
 });
 
 // Middlewares
