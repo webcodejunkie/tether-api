@@ -2,7 +2,7 @@ const express = require("express"),
 	app = express(),
 	server = require("http").createServer(app);
 
-// Cors Policy
+// Socket Cors Policy
 let allowedOrigins = ['http://localhost:1234', 'http://localhost:3000', 'https://webcodejunkie.github.io'];
 const io = require("socket.io")(server, {
 	cors: {
@@ -48,13 +48,17 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
 // Socket.IO Connection
 io.on('connection', (socket) => {
 	console.log(`'${socket.id} user just connected'`);
-	socket.on('disconnect', () => {
-		console.log('A user disconnected');
-	});
+
+	/*
 	socket.on("connected_user", data, () => {
 		socket.id = data;
 		console.log(data);
-	})
+	});
+	*/
+
+	socket.on('disconnect', () => {
+		console.log('A user disconnected');
+	});
 });
 
 // Middlewares
